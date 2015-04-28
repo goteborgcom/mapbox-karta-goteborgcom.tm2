@@ -20,7 +20,7 @@ interactivity_layer: ''
 layers: null
 maxzoom: 18
 minzoom: 8
-name: goteborg.com - sandbox
+name: mapbox-karta-goteborgcom
 source: "mapbox:///mapbox.mapbox-streets-v5"
 styles: 
   - style.mss

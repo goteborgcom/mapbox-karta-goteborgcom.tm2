@@ -1,3 +1,43 @@
+/**
+ * COLORS
+ * ============================================================================
+ */
+
+@white:             #fefefe;
+@black:             #0f0f0f;
+
+@map:               #efe5d9;
+@landcover:         #b2c58a;
+
+@landuseGreen:      #b2c58a;
+@landuseRed:        #E6BAA8;
+
+@building:         #efe5d9;
+@buildingOutline:  #ddcebd;
+@buildingSpecial:  #E6BAA8;
+
+@water:             #5a7676;
+@waterShadow:       #99cccc;
+
+@motorway:          #e7d46a; 
+@motorwayOutline:   #e7a96a; 
+@street:            #f8f4f0;
+@streetOutline:     #cec9c4;
+
+@labelBlue:         #5a7676;
+@labelGreen:        #41734e;
+
+/**
+ * PATTERNS
+ * ============================================================================
+ */
+
+@pattern-land: url(pattern/land_pattern.png);
+@pattern-water: url(pattern/water_pattern.png);
+@pattern-landuse: url(pattern/landuse_pattern.png);
+@pattern-landuse2: url(pattern/white_wall_hash2.png);
+
+
 // ---------------------------------------------------------------------
 // Common Colors
 
@@ -35,16 +75,6 @@
 @grey-d80: darken(@grey, 80%);
   
 @white: #fefefe;
-
-
-// ---------------------------------------------------------------------
-// Patterns
-
-@pattern-land: url(pattern/land_pattern.png);
-@pattern-water: url(pattern/water_pattern.png);
-@pattern-landuse: url(pattern/landuse_pattern.png);
-
-@pattern-landuse2: url(pattern/white_wall_hash2.png);
 
 
 // ---------------------------------------------------------------------

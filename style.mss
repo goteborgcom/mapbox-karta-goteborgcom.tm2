@@ -1,36 +1,37 @@
-// ---------------------------------------------------------------------
+/**
+ * MAP
+ * ============================================================================
+ */
 
 Map {
-  background-color:@beige;
-  background-image: @pattern-land;
-  background-image-comp-op: multiply;
-  background-image-opacity: 0.8;
+  background-color: @map; 
 }
 
-// ---------------------------------------------------------------------
-// Water Features 
+/**
+ * WATER and WATERWAYS
+ * ============================================================================
+ */
 
 #water {
-  polygon-fill: @blue;
-  // Map tiles are 256 pixels by 256 pixels wide, so the height 
-  // and width of tiling pattern images must be factors of 256. 
-  polygon-pattern-file: @pattern-water; 
-  polygon-pattern-opacity: 0.07 ;
-  line-width:0;
-  line-color: @blue-d20;
-  /*line-opacity: 0.4;
-    [zoom>=12] { line-width: 1.5; }
-    [zoom>=14] { line-width: 2; }
-    [zoom>=16] { line-width: 5; }
-  //line-comp-op: src-over;
- */ 
-  
+  /* To have a faded edge on the water we use a ligther color for the 
+   * ::shadow which gets inverted and the we applie a blur to that shadow
+   * layer
+   */
+  polygon-fill: @water;
+  polygon-pattern-file: @pattern-water;
+  polygon-pattern-opacity: 0.6;
+
+  ::shadow {
+    image-filters:agg-stack-blur(10,10);
+    polygon-fill: lighten(@waterShadow, 5%);
+    polygon-opacity: 0.65;
+  }
 }
 
 #waterway {
-  line-color: @blue ;
+  line-color: @water;
   line-cap: round;
-  line-width: 1.5;
+  line-width: 0.5;
   [class='river'] {
     [zoom>=12] { line-width: 1.5; }
     [zoom>=14] { line-width: 2; }
@@ -45,81 +46,101 @@ Map {
   }
 }
 
-// ---------------------------------------------------------------------
-// Landuse areas 
- 
-#landuse {
- /* #landuse {
-  polygon-fill: @green-d5;
-  polygon-smooth: 0.5;
-  polygon-gamma: 0.5;
-  polygon-pattern-file: url(pattern/white_wall_hash.png);
-  polygon-pattern-comp-op: multiply;
-  polygon-pattern-smooth: 0.5;
-  [zoom>=15] {
-    line-width: 1;
-    line-color: @green-d5;
-    line-smooth: 0.5;
-  }
-  [zoom>=17] {
-    line-width: 2;
-    line-color: @green-d5;
-  }
-}
-  }*/
-  polygon-fill: @green;
+/**
+ * LANDCOVER
+ * ============================================================================
+ */
+
+#landcover[zoom<=12] {
+  polygon-smooth: 1;
+  polygon-gamma: 1;
   polygon-pattern-file: @pattern-landuse2;
   polygon-pattern-opacity: 0.4;
   polygon-pattern-comp-op: lighten;
-  [class='park'] {
-    polygon-fill: @green  ;
-    polygon-smooth: 0.5;
-    polygon-gamma: 0.5;
-    polygon-pattern-file: @pattern-landuse2;
-    polygon-pattern-opacity: 0.4 ;
-    polygon-pattern-comp-op: lighten;
-     
-  }
+  
   [class='wood'] {
-    polygon-fill: @green-d5 ;
+    polygon-fill: mix(@landcover, @map, 95%);
+  }
+  [class='scrub'] {
+    polygon-fill:  mix(@landcover, @map, 50%);
+  }
+  [class='grass'] {
+    polygon-fill: mix(@landcover, @map, 40%);
+  }
+  [class='crop'] {
+    polygon-fill: mix(@landcover, @map, 30%);
+  }
+  [class='snow'] {
+    polygon-fill: @white; 
+  }
+  
+}
+
+/**
+ * LANDUSE
+ * ============================================================================
+ */
+
+#landuse {
+  [class='park'],
+  [class='wood'],
+  [class='cemetery'],
+  [class='pitch'] {
+    polygon-fill: mix(@landuseGreen, @map, 95%);
+    polygon-gamma: 1;
     polygon-pattern-file: @pattern-landuse2;
     polygon-pattern-opacity: 0.4;
     polygon-pattern-comp-op: lighten;
-    
   }
+  
+  [class='park'],
+  [class='wood'],
+  [class='cemetery'] {
+    polygon-smooth: 1;
+    polygon-pattern-smooth: 1;
+  }
+  
+  [class='school'],
+  [class='hospital'] {
+    polygon-fill: @landuseRed;
+  }  
+  
 }
 
-// ---------------------------------------------------------------------
-// Political boundaries
+/**
+ * POLITICAL BOUNDRIES (OBS TVEK OM DETTA SKE MED)
+ * ============================================================================
+ */
  
-// Countries
-[admin_level=2] {
-  line-width: 0.36;
-  line-color: @beige-d20;
-  line-cap: round;
-    [zoom>=4] { 
-      line-width: 0.75; 
-    }
-    [zoom>=6] { line-width: 1; 
-    }
-    [zoom>=8] { line-width: 2; 
-    }
-}
-[maritime=1] {
-    // downplay boundaries that are over water
-    line-color: @blue; 
-}
-
-// ---------------------------------------------------------------------
-// Buildings 
-
-#building [zoom<=20]{
-  // At zoom level 13, only large buildings are included in the
-  // vector tiles. At zoom level 14+, all buildings are included.
-  polygon-fill: @beige-d15;
-  opacity: 0.30 ;
-  comp-op: multiply;
+#admin {
+  [admin_level=2] {
+    line-width: 0.15;
+    line-color: @black;
+    [maritime=1] { line-opacity: 0; }
+    [zoom>=3] { line-width: 0.25; }
+    [zoom>=4] { line-width: 0.25; }
+    [zoom>=5] { line-width: 0.5; }
+    [zoom>=6] { line-width: 0.5; }
+    [zoom>=7] { line-width: 0.75; }
+    [zoom>=8] { line-width: 1; }
+    [zoom>=9] { line-width: 1.5; }
+  }
+  [admin_level=4][zoom>=7] {
+    line-width: 0.75;
+    line-color: @black;
+    line-dasharray: 4,8,2;
+    [zoom>=8] { line-width: 1; }
+    [zoom>=9] { line-width: 1.5; }
+  }
+  
 }
 
-// ---------------------------------------------------------------------
- 
+/**
+ * BULDINGS
+ * ============================================================================
+ */
+
+#building {
+  polygon-fill: @building;
+ line-color: @buildingOutline;
+}

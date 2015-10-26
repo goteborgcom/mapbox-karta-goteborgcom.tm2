@@ -5,30 +5,276 @@
 // - `text-halo-rasterizer: fast;` gives a noticeable performance
 //    boost to render times and is recommended for *all* halos.
 
-// ---------------------------------------------------------------------
-// Languages
+/**
+ * LANDUSE
+ * ============================================================================
+ * There are 5 language options in the MapBox Streets vector tiles:
+ * - Local/default: '[name]'
+ * - English: '[name_en]'
+ */
 
-// There are 5 language options in the MapBox Streets vector tiles:
-// - Local/default: '[name]'
-// - English: '[name_en]'
-// - French: '[name_fr]'
-// - Spanish: '[name_es]'
-// - German: '[name_de]'
 @name: '[name]';  
 
+/**
+ * FONTS
+ * ============================================================================
+ * All fontsets should have a good fallback that covers as many glyphs
+ * as possible. 'Arial Unicode MS Regular' and 'Arial Unicode MS Bold' 
+ * are recommended as final fallbacks if you have them available. 
+ * They support all the characters used in the MapBox Streets vector tiles.
+ */
 
-// ---------------------------------------------------------------------
-// Fonts
-
-// All fontsets should have a good fallback that covers as many glyphs
-// as possible. 'Arial Unicode MS Regular' and 'Arial Unicode MS Bold' 
-//are recommended as final fallbacks if you have them available. 
-//They support all the characters used in the MapBox Streets vector tiles.
 @fallback: 'DIN Offc Pro Regular';
 @sans: 'DIN Offc Pro Regular', @fallback;
 @sans_md: 'DIN Offc Pro Medium', @fallback;
 @sans_bd: 'DIN Offc Pro Bold', @fallback;
 @sans_it: 'DIN Offc Pro Regular', @fallback;
+
+
+/**
+ * LABELS
+ * ============================================================================
+ */
+
+#marine_label {
+  text-name: @name;
+  text-face-name: @sans_md;
+  text-fill: @white;
+  text-size: 12;
+  text-character-spacing: 4;
+  text-wrap-width: 65;
+  [placement='line'] { text-placement: line; }
+  [labelrank=1] { text-size: 22; }
+  [labelrank=2] { text-size: 14; }
+}
+
+#water_label {
+  text-name: @name;
+  text-face-name: @sans;
+  text-fill: @white;
+  text-size: 10;
+  text-wrap-width: 20;
+  text-character-spacing: 2.5;
+  [area>=20000] {
+    text-size: 12;
+  }
+  [area>=50000] {
+    text-size: 13;
+  }
+  [area>=1500000000] {
+    text-size: 15;
+    text-face-name: @sans_md;
+  }
+}
+
+// ---------------------------------------------------------------------
+// Countries
+
+#country_label[zoom>=3] {
+  text-name: @name;
+  text-face-name: @sans_md;
+  text-transform: uppercase;
+  text-halo-rasterizer: fast;
+  text-halo-fill: @white;
+  text-halo-radius: 1.75;
+  text-fill: @black;
+  text-size: 10;
+  text-wrap-width: 40;
+  [scalerank=1] {
+    [zoom>=3] { text-size: 14; }
+    [zoom>=4] { text-size: 15; }
+    [zoom>=5] { text-size: 16; }
+    [zoom>=6] { text-size: 17; } 
+    [zoom>=7] { text-size: 18; } 
+  }
+  [scalerank=2] {
+    [zoom>=3] { text-size: 12; }
+    [zoom>=4] { text-size: 13; }
+    [zoom>=5] { text-size: 14; }
+    [zoom>=6] { text-size: 15; } 
+    [zoom>=7] { text-size: 16; } 
+  }
+  [scalerank=3] {
+    [zoom>=3] { text-size: 10; }
+    [zoom>=4] { text-size: 11; }
+    [zoom>=5] { text-size: 12; }
+    [zoom>=6] { text-size: 13; } 
+    [zoom>=7] { text-size: 14; } 
+  }
+}
+
+#country_label_line {
+  line-width: 1.5;
+  line-color: @black;
+}
+
+// ---------------------------------------------------------------------
+// States
+
+#state_label[zoom>=4] {
+  text-name: @name;
+  text-face-name: @sans_md;
+  text-halo-rasterizer: fast;
+  text-halo-fill: @white;
+  text-halo-radius: 1.5;
+  text-transform: uppercase;
+  text-fill: @black;
+  text-size: 11;
+  text-wrap-width: 40;
+  [zoom>=5] { text-size: 12; }
+  [zoom>=6] { text-size: 13; } 
+  [zoom>=7] { text-size: 14; }  
+}
+
+// ---------------------------------------------------------------------
+// Places
+
+// City labels with dots for low zoom levels.
+#place_label::citydots[type='city'][zoom>=4][zoom<=7][localrank<=2] {
+  // explicitly defining all the `ldir` values wer'e going
+  // to use shaves a bit off the final project.xml size
+  [ldir='N'],[ldir='S'],[ldir='E'],[ldir='W'],
+  [ldir='NE'],[ldir='SE'],[ldir='SW'],[ldir='NW'] {
+    shield-file: url("shield/dot-small.png");
+    shield-unlock-image: true;
+    shield-name: @name;
+    shield-face-name: @sans;
+    shield-placement: point;
+    shield-fill: @black;
+    shield-halo-fill: @white;
+    shield-halo-radius: 1.5;
+    shield-line-spacing: -4;
+    shield-wrap-width: 40;
+    shield-size: 10;
+    [zoom>=5] { shield-size: 11; }
+    [zoom>=6] { shield-size: 13; }
+    [zoom>=7] { shield-size: 15; }
+    [scalerank<=2] {
+      [zoom>=4] { shield-size: 12; }
+      [zoom>=5] { shield-size: 14; }
+      [zoom>=6] { shield-size: 16; }
+      [zoom>=7] { shield-size: 18; }
+    }
+    [ldir='E'] { shield-text-dx: 5; }
+    [ldir='W'] { shield-text-dx: -5; }
+    [ldir='N'] { shield-text-dy: -5; }
+    [ldir='S'] { shield-text-dy: 8; }
+    [ldir='NE'] { shield-text-dx: 4; shield-text-dy: -3; }
+    [ldir='SE'] { shield-text-dx: 4; shield-text-dy: 5; }
+    [ldir='SW'] { shield-text-dx: -4; shield-text-dy: 5; }
+    [ldir='NW'] { shield-text-dx: -4; shield-text-dy: -3; }
+  }
+}
+
+
+#place_label[type='city'][zoom>=8] {
+  text-name: @name;
+  text-face-name: @sans;
+  text-halo-rasterizer: fast;
+  text-halo-fill: @white;
+  text-halo-radius: 1.5;
+  text-fill: @black;
+  [zoom=8] {
+    text-size: 18;
+    [scalerank>=0][scalerank<=2] { text-size: 22; }
+    [scalerank>=3][scalerank<=6] { text-size: 20; }
+  }
+  [zoom=9] {
+    text-size: 19;
+    [scalerank>=0][scalerank<=2] { text-size: 23; }
+    [scalerank>=3][scalerank<=6] { text-size: 21; }
+  }
+  [zoom=10] {
+    text-size: 20;
+    [scalerank>=0][scalerank<=2] { text-size: 24; }
+    [scalerank>=3][scalerank<=6] { text-size: 22; }
+  }
+  [zoom=11] {
+    text-size: 21;
+    [scalerank>=0][scalerank<=2] { text-size: 25; }
+    [scalerank>=3][scalerank<=6] { text-size: 23; }
+  }
+  [zoom=12] {
+    text-size: 22;
+    [scalerank>=0][scalerank<=2] { text-size: 26; }
+    [scalerank>=3][scalerank<=6] { text-size: 24; }
+  }
+  [zoom>=13] {
+    text-size: 0;
+  }
+}
+
+#place_label[type='town'][zoom>=9] {
+  text-name: @name;
+  text-face-name: @sans;
+  text-halo-rasterizer: fast;
+  text-halo-fill: @white;
+  text-halo-radius: 1.5;
+  text-fill: @black;
+  [zoom=9] {
+    text-size: 0;
+    [localrank>=0][localrank<=2] { text-size: 15; }
+  }
+  [zoom=10] {
+    text-size: 0;
+    [localrank>=0][localrank<=2] { text-size: 16; }
+    [localrank>=3][localrank<=6] { text-size: 14; }
+  }
+  [zoom=11] {
+    text-size: 13;
+    [localrank>=0][localrank<=2] { text-size: 17; }
+    [localrank>=3][localrank<=6] { text-size: 15; }
+  }
+  [zoom>=12] {
+    text-size: 14;
+    [localrank>=0][localrank<=2] { text-size: 18; }
+    [localrank>=3][localrank<=6] { text-size: 16; }
+  }
+}
+
+#place_label[type='village'][zoom>=11] {
+  text-name: @name;
+  text-face-name: @sans;
+  text-halo-rasterizer: fast;
+  text-halo-fill: @white;
+  text-halo-radius: 1.5;
+  text-fill: @black;
+  [zoom=11] {
+    text-size: 0;
+    [localrank>=0][localrank<=1] { text-size: 13; }
+    [localrank>=2][localrank<=3] { text-size: 11; }
+  }
+  [zoom>=12] {
+    text-size: 10;
+    [localrank>=0][localrank<=1] { text-size: 14; }
+    [localrank>=2][localrank<=3] { text-size: 12; }
+  }
+}
+
+#place_label[type='hamlet'][zoom>=12][localrank<=3],
+#place_label[type='suburb'][zoom>=12][localrank<=3],
+#place_label[type='neighbourhood'][zoom>=12][localrank<=3] {
+  text-name: @name;
+  text-face-name: @sans_md;
+  text-halo-rasterizer: fast;
+  text-transform: uppercase;
+  text-halo-fill: @white;
+  text-halo-radius: 1.5;
+  text-fill: @black;
+  text-size: 10;
+  [zoom>=13] { text-size: 11; }
+  [zoom>=14] { text-size: 13; }
+  [zoom>=15] { text-size: 15; }
+}
+
+
+
+
+
+
+
+
+
 
 
 // ---------------------------------------------------------------------
@@ -37,7 +283,7 @@
 // The country labels in MapBox Streets vector tiles are placed by hand,
 // optimizing the arrangement to fit as many as possible in densely-
 // labeled areas.
-  
+  /*
   #country_label_line {
   // Lines that connect offset labels to small
   // island & coastal countries at small scales.
@@ -45,12 +291,12 @@
   line-dasharray: 3,1;
   line-comp-op: multiply;
 }
-    
+    */
   /*[zoom>=4][scalerank=1] {text-size:  0;}
   [zoom>=4][scalerank=2] {text-size:  0;}
   [zoom>=4][scalerank=3] {text-size:  12;}
   [zoom>=4][scalerank>4] {text-size:  0;}*/
-
+/*s
 
 // ---------------------------------------------------------------------
 // Marine
@@ -204,7 +450,7 @@
 
 // ---------------------------------------------------------------------
 // Roads
-
+/*
 #road_label {
   // [class='motorway'], 
   [class='main'], 
@@ -268,12 +514,12 @@
      }
   }
 }
-
+*/
 
 // ---------------------------------------------------------------------
 // Water
-
-/*#water_label {
+/*
+#water_label {
   
     text-name: @name;
     text-face-name: @sans_md;
@@ -289,7 +535,7 @@
 
 // ---------------------------------------------------------------------
   
-  #gbg_city_areas {
+ /* #gbg_city_areas {
   [zoom=13],
   [zoom=14],
   [zoom=15],
@@ -312,9 +558,6 @@
       text-size: 14;
     }
   }
- }
-  
-  
-
+ }*/
   
   

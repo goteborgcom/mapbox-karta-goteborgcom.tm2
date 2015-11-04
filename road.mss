@@ -62,7 +62,7 @@
   }
   [class='main'] {
     [zoom>=6] {
-      ::case { line-color: @street; }
+      ::case { line-color: @mainRoad; }
       ::case { line-smooth: 1; }
       ::case { line-width: 0.25; }
     }
@@ -76,9 +76,9 @@
       ::case { line-width: 1; }
     }
     [zoom>=11] {
-      ::case { line-color: @streetOutline; }
+      ::case { line-color: @mainRoadOutline; }
       ::case { line-width: 2; }
-      ::fill { line-color: @street; }
+      ::fill { line-color: @mainRoad; }
       ::fill { line-smooth: 1; }
       ::fill { line-width: 0.5; }
     }
@@ -160,7 +160,7 @@
   [class='path'] {
     [zoom>=15] {
        ::case { line-color: @street; }
-       ::case { line-smooth: 1; }
+       ::case { line-smooth: 0; }
        ::case { line-cap: round; }
        ::case { line-width: 1; }
     }
@@ -168,7 +168,7 @@
       ::case { line-color: @streetOutline; }
       ::case { line-width: 3; }
       ::fill { line-color: @street; }
-      ::fill { line-smooth: 1; }
+      ::fill { line-smooth: 0; }
       ::fill { line-cap: round; }
       ::fill { line-width: 1; }
     }

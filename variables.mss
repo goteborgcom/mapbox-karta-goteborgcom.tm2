@@ -12,8 +12,8 @@
 @landuseGreen:      #b2c58a;
 @landuseRed:        #E6BAA8;
 
-@building:         #efe5d9;
-@buildingOutline:  #ddcebd;
+@building:         #e6dacd;
+@buildingOutline:  #e6dacd;
 @buildingSpecial:  #E6BAA8;
 
 @water:             #5a7676;
@@ -21,9 +21,13 @@
 
 @motorway:          #e7d46a; 
 @motorwayOutline:   #e7a96a; 
+@mainRoad:          #fefefe;
+@mainRoadOutline:   #e0e0e0;
 @street:            #f8f4f0;
-@streetOutline:     #cec9c4;
+@streetOutline:     #e2deda;
 
+@labelWhite:        #fefefe;
+@labelBlack:        #0f0f0f;
 @labelBlue:         #5a7676;
 @labelGreen:        #41734e;
 

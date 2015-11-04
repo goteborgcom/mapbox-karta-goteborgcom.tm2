@@ -92,19 +92,15 @@ Map {
     polygon-pattern-opacity: 0.4;
     polygon-pattern-comp-op: lighten;
   }
-  
-  [class='park'],
-  [class='wood'],
-  [class='cemetery'] {
-    polygon-smooth: 1;
-    polygon-pattern-smooth: 1;
+  /*
+  [class='hospital'][zoom>=13] {
+    polygon-fill: @buildingSpecial;
   }
   
-  [class='school'],
-  [class='hospital'] {
-    polygon-fill: @landuseRed;
-  }  
-  
+  [class='school'][zoom>=13] {
+    polygon-fill: @buildingSpecial;
+  }
+  */  
 }
 
 /**
@@ -141,6 +137,12 @@ Map {
  */
 
 #building {
-  polygon-fill: @building;
- line-color: @buildingOutline;
+  polygon-fill: @black;
+  polygon-opacity: 0.025;
+  [zoom>=15] {
+    polygon-fill: @building; 
+    polygon-opacity: 1;
+    line-color: @map;
+    line-width: 1;
+  }
 }
